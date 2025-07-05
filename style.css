@@ -1,0 +1,137 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+     scroll-behavior: smooth ;
+
+}
+
+
+body,html{
+    overflow-x: hidden;
+    font-family: "Poppins", sans-serif;
+    background-color: black;
+ 
+}
+
+.room {
+    height: 100vh;
+    width: 100%;
+    position: relative;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    background-color: black;
+}
+
+.me{
+    height: 100vh;
+    width: 100%;
+    position: relative;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    background-color: black;
+}
+
+
+nav{
+    color:white;
+    z-index: 2;
+    position: fixed;
+    width: 100%;
+    padding:2rem 5rem;
+    display: flex;
+    justify-content: space-between;
+
+
+}
+
+nav a{
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+
+}
+
+nav ul{
+    display: flex;
+    list-style: none;
+    gap: 2rem;
+
+  
+}
+
+.progress-bar-container{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 2;
+}
+
+#progress-bar{
+    width: 30%;
+margin-top: 0.5%;
+height: 2%;
+z-index: 2;
+}
+
+label{
+    color: white;
+    font-size: 1.5rem;
+    margin-top: 1rem;
+    z-index: 2;
+}
+
+.container{
+    /* scroll-snap-type: y mandatory; */
+    /* overflow-y: scroll; */
+    height: 100vh;
+
+
+}
+
+section{
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    scroll-snap-align: start;
+    z-index: 2;
+
+}
+
+
+.two{
+
+    height: 100vh;
+    background-color: black;
+   
+    
+}
+
+#cameraActionButton {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    z-index: 3;
+}
+
+#cameraActionButton:hover {
+    background-color: #0056b3;
+}

@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite App</title>
+    <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+  </head>
+  <body>
+
+    <div class="progress-bar-container">
+      <label id="label1" for="progress-bar">Nice to meet you</label>
+      <label id="label2" for="progress-bar" style="display: none;">i'm Davide Resigotti</label>
+      <progress id="progress-bar" value="0" max="100"></progress>
+    </div>
+
+    <nav id="navbar">
+      <a href="#one">Davide Resigotti</a>
+      <ul>
+        <li><a href="#two">Who I Am</a></li>
+        <li>Projects</li>
+      </ul>
+    </nav>
+
+    <button id="cameraActionButton">Play Camera Animation</button>
+
+    <div class="container">
+      <section id="one" class="one">
+        <canvas class="room"></canvas>
+      </section>
+
+      <!-- <section id="two" class="two">
+        <canvas class="me"></canvas>
+      </section> -->
+    </div>
+
+    <script type="module" src="/room.js"></script>
+    <!-- <script type="module" src="/me.js"></script> -->
+  </body>
+</html>
