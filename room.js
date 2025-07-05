@@ -78,6 +78,7 @@ loader.load('./camera1.glb', (gltf) => {
     loop();
 });
 
+
 // Lights
 const light = new THREE.PointLight(0xffffff, 20, 500, 0.7);
 light.position.set(-23, -8, -40);
