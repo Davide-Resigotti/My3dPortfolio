@@ -16,74 +16,6 @@ const dracoLoader = new DRACOLoader();
 dracoLoader.setDecoderPath('https://www.gstatic.com/draco/v1/decoders/');
 loader.setDRACOLoader(dracoLoader);
 
-// Camera1
-let camera;
-let mixer;
-let camera1 = new THREE.Object3D();
-loader.load('./camera1.glb', (gltf) => {
-    camera1 = gltf.scene;
-    scene.add(camera1);
-    console.log('camera1 loaded');
-
-    // Imposta camera1 come la fotocamera principale
-    camera1.traverse((child) => {
-        if (child.isCamera) {
-            camera = child;
-            camera.fov = 40;
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-        }
-    });
-
-    // Animation
-    mixer = new THREE.AnimationMixer(camera1);
-    const clips = gltf.animations;
-    const clip = THREE.AnimationClip.findByName(clips, 'CameraAction');
-    const action = mixer.clipAction(clip);
-
-    document.getElementById('cameraActionButton').addEventListener('click', () => {
-        if (action.isRunning()) {
-            action.stop();
-        } else {
-            action.play();
-        }
-    });
-
-    // Controls
-    const controls = new OrbitControls(camera, renderer.domElement);
-    controls.enableDamping = true;
-    controls.enablePan = true;
-    controls.enableZoom = false;
-    controls.autoRotateSpeed = 0.3;
-    controls.dampingFactor = 0.08;
-
-    // GUI
-    const gui = new GUI();
-    gui.open();
-    const cameraFolder = gui.addFolder('Camera');
-    cameraFolder.add(camera.position, 'x').min(-100).max(100).step(0.1).name('Camera X');
-    cameraFolder.add(camera.position, 'y').min(-100).max(100).step(0.1).name('Camera Y');
-    cameraFolder.add(camera.position, 'z').min(-100).max(100).step(0.1).name('Camera Z');
-
-    const clock = new THREE.Clock();
-
-    const loop = () => {
-        const delta = clock.getDelta();
-        if (mixer) mixer.update(delta);
-        controls.update();
-        renderer.render(scene, camera);
-        window.requestAnimationFrame(loop);
-    }
-
-    loop();
-});
-
-
-// Lights
-const light = new THREE.PointLight(0xffffff, 20, 500, 0.7);
-light.position.set(-23, -8, -40);
-scene.add(light);
-
 // Renderer
 const renderer = new THREE.WebGLRenderer({
     canvas: document.querySelector('.room')
@@ -91,6 +23,62 @@ const renderer = new THREE.WebGLRenderer({
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setClearColor(0x000000, 0);
+
+// Camera
+let view;
+let mixer;
+
+view = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 0.1, 1000);
+view.position.set(10, 7, 10);
+
+// Controls
+const controls = new OrbitControls(view, renderer.domElement);
+controls.enableDamping = true;
+controls.enablePan = true;
+controls.enableZoom = false;
+controls.autoRotateSpeed = 0.3;
+controls.dampingFactor = 0.08;
+
+// GUI
+const gui = new GUI();
+gui.open();
+
+const cameraFolder = gui.addFolder('Camera');
+cameraFolder.add(view.position, 'x').min(-100).max(100).step(0.1).name('Camera X');
+cameraFolder.add(view.position, 'y').min(-100).max(100).step(0.1).name('Camera Y');
+cameraFolder.add(view.position, 'z').min(-100).max(100).step(0.1).name('Camera Z');
+cameraFolder.close();
+
+// Lights
+const backLight = new THREE.PointLight(0xffffff, 20, 500, 0.7);
+backLight.position.set(-23, -8, -40);
+scene.add(backLight);
+
+const frontLight = new THREE.PointLight(0xffffff, 50, 300, 0.7);
+frontLight.position.set(40, 45, 25);
+scene.add(frontLight);
+
+const backLightFolder = gui.addFolder('Back Light');
+backLightFolder.add(backLight.position, 'x').min(-100).max(100).step(0.1).name('Back Light X');
+backLightFolder.add(backLight.position, 'y').min(-100).max(100).step(0.1).name('Back Light Y');
+backLightFolder.add(backLight.position, 'z').min(-100).max(100).step(0.1).name('Back Light Z');
+
+const frontLightFolder = gui.addFolder('Front Light');
+frontLightFolder.add(frontLight.position, 'x').min(-100).max(100).step(0.1).name('Front Light X');
+frontLightFolder.add(frontLight.position, 'y').min(-100).max(100).step(0.1).name('Front Light Y');
+frontLightFolder.add(frontLight.position, 'z').min(-100).max(100).step(0.1).name('Front Light Z');
+
+const clock = new THREE.Clock();
+
+const loop = () => {
+    const delta = clock.getDelta();
+    if (mixer) mixer.update(delta);
+    controls.update();
+    renderer.render(scene, view);
+    window.requestAnimationFrame(loop);
+}
+
+loop();
 
 // Progress Bar
 const progressBar = document.getElementById('progress-bar');
@@ -164,9 +152,9 @@ loader.load('./scene.gltf', (gltf) => {
 
 // Resizing etc
 window.addEventListener('resize', () => {
-    if (camera) {
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
+    if (view) {
+        view.aspect = window.innerWidth / window.innerHeight;
+        view.updateProjectionMatrix();
     }
     renderer.setSize(window.innerWidth, window.innerHeight);
 });
