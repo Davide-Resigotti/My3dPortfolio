@@ -29,15 +29,16 @@ let view;
 let mixer;
 
 view = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 0.1, 1000);
-view.position.set(10, 7, 10);
+view.position.set(11, 6, 3);
 
 // Controls
 const controls = new OrbitControls(view, renderer.domElement);
 controls.enableDamping = true;
 controls.enablePan = true;
-controls.enableZoom = false;
+controls.enableZoom = true;
 controls.autoRotateSpeed = 0.3;
 controls.dampingFactor = 0.08;
+controls.autoRotate = true;
 
 // GUI
 const gui = new GUI();
@@ -47,7 +48,7 @@ const cameraFolder = gui.addFolder('Camera');
 cameraFolder.add(view.position, 'x').min(-100).max(100).step(0.1).name('Camera X');
 cameraFolder.add(view.position, 'y').min(-100).max(100).step(0.1).name('Camera Y');
 cameraFolder.add(view.position, 'z').min(-100).max(100).step(0.1).name('Camera Z');
-cameraFolder.close();
+
 
 // Lights
 const backLight = new THREE.PointLight(0xffffff, 20, 500, 0.7);
@@ -62,11 +63,13 @@ const backLightFolder = gui.addFolder('Back Light');
 backLightFolder.add(backLight.position, 'x').min(-100).max(100).step(0.1).name('Back Light X');
 backLightFolder.add(backLight.position, 'y').min(-100).max(100).step(0.1).name('Back Light Y');
 backLightFolder.add(backLight.position, 'z').min(-100).max(100).step(0.1).name('Back Light Z');
+backLightFolder.close();
 
 const frontLightFolder = gui.addFolder('Front Light');
 frontLightFolder.add(frontLight.position, 'x').min(-100).max(100).step(0.1).name('Front Light X');
 frontLightFolder.add(frontLight.position, 'y').min(-100).max(100).step(0.1).name('Front Light Y');
 frontLightFolder.add(frontLight.position, 'z').min(-100).max(100).step(0.1).name('Front Light Z');
+frontLightFolder.close();
 
 const clock = new THREE.Clock();
 
@@ -147,6 +150,7 @@ loader.load('./scene.gltf', (gltf) => {
     room.scale.set(1, 1, 1);
 
     scene.add(room);
+
     console.log('room loaded');
 });
 
