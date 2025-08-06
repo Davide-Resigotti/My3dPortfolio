@@ -29,16 +29,16 @@ let view;
 let mixer;
 
 view = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 0.1, 1000);
-view.position.set(11, 6, 3);
+view.position.set(9, 5, -3);
 
 // Controls
 const controls = new OrbitControls(view, renderer.domElement);
 controls.enableDamping = true;
 controls.enablePan = true;
-controls.enableZoom = true;
-controls.autoRotateSpeed = 0.3;
+// controls.enableZoom = true;
 controls.dampingFactor = 0.08;
 controls.autoRotate = true;
+
 
 // GUI
 const gui = new GUI();
@@ -127,8 +127,6 @@ loadingManager.onLoad = () => {
         duration: 1,
         ease: 'power2.inOut'
     });
-
-   
 }
 
 // MODELS
@@ -150,6 +148,45 @@ loader.load('./scene.gltf', (gltf) => {
     room.scale.set(1, 1, 1);
 
     scene.add(room);
+
+    //EFFECTS
+    const initialAzimuth = controls.getAzimuthalAngle();
+    
+    const numberOfRotations = 7; 
+    const targetAzimuth = initialAzimuth - (Math.PI * 2 * numberOfRotations);
+
+    const rotationObject = { azimuth: initialAzimuth };
+    
+    gsap.to(rotationObject, {
+        azimuth: targetAzimuth,
+        duration: 1,
+        ease: 'power2.out',
+        onUpdate: () => {
+            const targetPosition = new THREE.Vector3();
+            const radius = controls.getDistance();
+            const polar = controls.getPolarAngle();
+            
+            targetPosition.setFromSphericalCoords(radius, polar, rotationObject.azimuth);
+            targetPosition.add(controls.target);
+            
+            view.position.copy(targetPosition);
+            view.lookAt(controls.target);
+        },
+        onComplete: () => {
+            // Ensure we end exactly at the initial position
+            const finalPosition = new THREE.Vector3();
+            const radius = controls.getDistance();
+            const polar = controls.getPolarAngle();
+            
+            finalPosition.setFromSphericalCoords(radius, polar, initialAzimuth);
+            finalPosition.add(controls.target);
+            
+            view.position.copy(finalPosition);
+            view.lookAt(controls.target);
+            
+            controls.autoRotateSpeed = 0.1;
+        }
+    });
 
     console.log('room loaded');
 });
