@@ -31,24 +31,35 @@ let mixer;
 view = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 0.1, 1000);
 view.position.set(9, 5, -3);
 
-// Controls
+//Controls
 const controls = new OrbitControls(view, renderer.domElement);
 controls.enableDamping = true;
 controls.enablePan = true;
-// controls.enableZoom = true;
+controls.enableZoom = false;
 controls.dampingFactor = 0.08;
 controls.autoRotate = true;
 
 
 // GUI
-const gui = new GUI();
-gui.open();
+// const gui = new GUI();
+// gui.open();
 
-const cameraFolder = gui.addFolder('Camera');
-cameraFolder.add(view.position, 'x').min(-100).max(100).step(0.1).name('Camera X');
-cameraFolder.add(view.position, 'y').min(-100).max(100).step(0.1).name('Camera Y');
-cameraFolder.add(view.position, 'z').min(-100).max(100).step(0.1).name('Camera Z');
+// const cameraFolder = gui.addFolder('Camera');
+// cameraFolder.add(view.position, 'x').min(-100).max(100).step(0.1).name('Camera X');
+// cameraFolder.add(view.position, 'y').min(-100).max(100).step(0.1).name('Camera Y');
+// cameraFolder.add(view.position, 'z').min(-100).max(100).step(0.1).name('Camera Z');
 
+// const backLightFolder = gui.addFolder('Back Light');
+// backLightFolder.add(backLight.position, 'x').min(-100).max(100).step(0.1).name('Back Light X');
+// backLightFolder.add(backLight.position, 'y').min(-100).max(100).step(0.1).name('Back Light Y');
+// backLightFolder.add(backLight.position, 'z').min(-100).max(100).step(0.1).name('Back Light Z');
+// backLightFolder.close();
+
+// const frontLightFolder = gui.addFolder('Front Light');
+// frontLightFolder.add(frontLight.position, 'x').min(-100).max(100).step(0.1).name('Front Light X');
+// frontLightFolder.add(frontLight.position, 'y').min(-100).max(100).step(0.1).name('Front Light Y');
+// frontLightFolder.add(frontLight.position, 'z').min(-100).max(100).step(0.1).name('Front Light Z');
+// frontLightFolder.close();
 
 // Lights
 const backLight = new THREE.PointLight(0xffffff, 20, 500, 0.7);
@@ -58,18 +69,6 @@ scene.add(backLight);
 const frontLight = new THREE.PointLight(0xffffff, 50, 300, 0.7);
 frontLight.position.set(40, 45, 25);
 scene.add(frontLight);
-
-const backLightFolder = gui.addFolder('Back Light');
-backLightFolder.add(backLight.position, 'x').min(-100).max(100).step(0.1).name('Back Light X');
-backLightFolder.add(backLight.position, 'y').min(-100).max(100).step(0.1).name('Back Light Y');
-backLightFolder.add(backLight.position, 'z').min(-100).max(100).step(0.1).name('Back Light Z');
-backLightFolder.close();
-
-const frontLightFolder = gui.addFolder('Front Light');
-frontLightFolder.add(frontLight.position, 'x').min(-100).max(100).step(0.1).name('Front Light X');
-frontLightFolder.add(frontLight.position, 'y').min(-100).max(100).step(0.1).name('Front Light Y');
-frontLightFolder.add(frontLight.position, 'z').min(-100).max(100).step(0.1).name('Front Light Z');
-frontLightFolder.close();
 
 const clock = new THREE.Clock();
 
@@ -133,7 +132,7 @@ loadingManager.onLoad = () => {
 // room
 let room = new THREE.Object3D();
 
-loader.load('./scene.gltf', (gltf) => {
+loader.load('/My3dPortfolio/scene.gltf', (gltf) => {
     room = gltf.scene;
 
     // Calculate the bounding box of the room
@@ -189,6 +188,9 @@ loader.load('./scene.gltf', (gltf) => {
     });
 
     console.log('room loaded');
+}, undefined, (error) => {
+    console.error('Error loading scene.gltf:', error);
+    // alert('Failed to load 3D room model: ' + error.message);
 });
 
 // Resizing etc

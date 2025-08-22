@@ -30,7 +30,7 @@ let model = new THREE.Object3D();
 let mixer;
 
 
-loader.load('./me.gltf', (gltf) => {
+loader.load('/My3dPortfolio/me.gltf', (gltf) => {
    model = gltf.scene;
 
    // Calcola il bounding box del modello
@@ -48,7 +48,7 @@ loader.load('./me.gltf', (gltf) => {
 
   scene.add(model);
 
-  model.children.forEach((child) => console.log(child.name));
+  
 
   mixer = new THREE.AnimationMixer(model);
   const clips = gltf.animations;
@@ -57,7 +57,7 @@ loader.load('./me.gltf', (gltf) => {
 
 
   //myAnimation
-  const target = document.getElementById('two');
+  const target = document.getElementById('whoiam');
   const me = document.querySelector('.me');
   
   me.style.display = 'none';
@@ -65,12 +65,12 @@ loader.load('./me.gltf', (gltf) => {
   const handleIntersection = (entries, observer) => {
       entries.forEach(entry => {
           if (entry.isIntersecting) {
-              console.log('me è entrato nella viewport!');
+              // console.log('me è entrato nella viewport!');
               me.style.display = 'block';
               action.play();
           }
           else {
-              console.log('me è uscito dalla viewport!');
+              // console.log('me è uscito dalla viewport!');
               me.style.display = 'none';
               action.stop();
           }
@@ -87,6 +87,9 @@ loader.load('./me.gltf', (gltf) => {
   
 
   console.log('me loaded');
+}, undefined, (error) => {
+  console.error('Error loading me.gltf:', error);
+  // alert('Failed to load 3D character model: ' + error.message);
 });
 
 
@@ -116,19 +119,19 @@ camera.position.set(-3, 1, 0);
 scene.add(camera);
 
 
-// GUI
-const gui = new GUI();
+// // GUI
+// const gui = new GUI();
 
-gui.close();
+// gui.close();
 
 
 
-const cameraFolder = gui.addFolder('Camera');
+// const cameraFolder = gui.addFolder('Camera');
 
-// Add GUI controls for camera position
-cameraFolder.add(camera.position, 'x', -100, 100,1).name('Camera X');
-cameraFolder.add(camera.position, 'y', -100, 100,1).name('Camera Y');
-cameraFolder.add(camera.position, 'z', -100, 100,1).name('Camera Z');
+// // Add GUI controls for camera position
+// cameraFolder.add(camera.position, 'x', -100, 100,1).name('Camera X');
+// cameraFolder.add(camera.position, 'y', -100, 100,1).name('Camera Y');
+// cameraFolder.add(camera.position, 'z', -100, 100,1).name('Camera Z');
 
 
 

@@ -18,7 +18,7 @@
       <a href="#home">Davide Resigotti</a>
       <ul>
         <li><a href="#whoiam">Who I Am</a></li>
-        <li>Projects</li>
+        <li><a href="./projects.html">Projects</a></li>
       </ul>
     </nav>
 
@@ -27,12 +27,49 @@
         <canvas class="room"></canvas>
       </section>
 
-      <!-- <section id="whoiam" class="whoiam">
+      <section id="whoiam" class="whoiam">
         <canvas class="me"></canvas>
-      </section> -->
+      </section>
     </div>
 
     <script type="module" src="/room.js"></script>
-    <!-- <script type="module" src="/me.js"></script> -->
+    <script type="module" src="/me.js"></script>
+    <script>
+      const navLinks = document.querySelectorAll('#navbar ul a[href^="#"]');
+      const brandLink = document.querySelector('#navbar > a[href="#home"]');
+      const sections = Array.from(document.querySelectorAll('section[id]'));
+
+      // Initial: highlight brand (Home) when landing without hash
+      function setInitialActive() {
+        navLinks.forEach(a => a.classList.remove('active'));
+        if (brandLink) brandLink.classList.add('active');
+      }
+      if (!location.hash || location.hash === '#home') {
+        setInitialActive();
+      }
+
+      const observer = new IntersectionObserver((entries) => {
+        const isHomeVisible = entries.some(e => e.target.id === 'home' && e.isIntersecting);
+        if (isHomeVisible) {
+          navLinks.forEach(a => a.classList.remove('active'));
+          if (brandLink) brandLink.classList.add('active');
+          return; // prefer Home when visible
+        }
+
+        entries.forEach(entry => {
+          const id = entry.target.getAttribute('id');
+          if (id === 'home') return;
+          const link = document.querySelector(`#navbar a[href="#${id}"]`);
+          if (!link) return;
+          if (entry.isIntersecting) {
+            if (brandLink) brandLink.classList.remove('active');
+            navLinks.forEach(a => a.classList.remove('active'));
+            link.classList.add('active');
+          }
+        });
+      }, { root: null, rootMargin: '0px 0px -60% 0px', threshold: 0.3 });
+
+      sections.forEach(sec => observer.observe(sec));
+    </script>
   </body>
 </html>

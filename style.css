@@ -54,6 +54,19 @@ nav a{
 
 }
 
+/* Active nav link state (only for menu items, not brand) */
+nav ul a.active{
+    font-size: 1.1rem;
+    color: #cfcfcf;
+    text-shadow: 0 0 12px rgba(207,207,207,0.6);
+}
+
+/* Active state for brand link when Home is in view */
+nav > a.active{
+    color: #cfcfcf;
+    text-shadow: 0 0 12px rgba(207,207,207,0.6);
+}
+
 nav ul{
     display: flex;
     list-style: none;
@@ -111,10 +124,5 @@ section{
 }
 
 
-.whoiam{
 
-    height: 100vh;
-    background-color: black;
-   
-    
-}
+
